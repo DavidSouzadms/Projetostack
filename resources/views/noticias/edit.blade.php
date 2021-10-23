@@ -18,6 +18,17 @@
     </div>
     @endif
 
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <p><strong>Erro ao realizar esta operação</strong></p>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
         <form action="/noticias/{{ $noticia->id }}/edit" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -51,7 +62,7 @@
 
             <div class="form-group">
                 <label for="data_publicacao">Data da Publicação</label>
-                <input type="text" name="data_publicacao" class="form-control" data-provide="datepicker" data-date-language="pt-BR" value="{{ Carbon\Carbon::createFromFormat('Y-m-d' , $noticia->data_publicacao)->format('d/m/Y')}}">
+                <input type="text" name="data_publicacao" class="form-control" data-provide="datepicker" data-date-language="pt-BR" value="{{optional($noticia->data_publicacao) -> format('d/m/Y')}}">            
             </div>
 
             <button type="submit" class="btn btn-primary">Salvar</button>

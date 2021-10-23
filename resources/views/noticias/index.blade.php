@@ -42,9 +42,10 @@
                             </form>
                         </td>
                         <td>{{ $noticia->titulo }}</td>
-                        <td>{{ $noticia->status }}</td>
-                        <td>{{ $noticia->data_publicacao }}</td>
+                        <td>{{ $noticia->status_formatado }}</td>
+                        <td>{{ $opcional($noticia->data_publicacao) -> format('d/m/Y')}}</td>
                         <td><img src="{{ $noticia->imagem}}" height="40px"></td>
+                        
                     </tr>
                 @endforeach
             </tbody>
