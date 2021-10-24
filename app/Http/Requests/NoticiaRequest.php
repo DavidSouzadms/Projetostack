@@ -30,7 +30,7 @@ class NoticiaRequest extends FormRequest
             'status' => ['required',
             Rule::in(['A','I'])
         ],
-        'data_publicacao' => 'data_format:d/m/Y',
+        'data_publicacao' => 'date_format:d/m/Y',
         'imagem' => 'nullable|image'
         ];
     }

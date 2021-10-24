@@ -11,9 +11,8 @@ class NoticiaController extends Controller
 {
     public function index(){
 
-        $noticias = Noticia::all();
-        return view('noticias.index', [
-            'noticias' => $noticias
+        return view('noticias.index',[
+            'noticias' => Noticia::where('status', Noticia::STATUS_ATIVO)->paginate(2)
         ]);
     }
 
@@ -22,12 +21,10 @@ class NoticiaController extends Controller
     }
 
     public function store(NoticiaRequest $request){
-       
-        $dados = $request->all();
-        $dados['data_publicacao'] = Carbon::createFromFormat('d/m/Y',$dados['data_publicacao'])->format('Y-m-d');
-
-        $request->imagem->storeAs('public', $request->imagem->getClientOriginalName());
-        $dados['imagem'] = '/storage/' . $request->imagem->getClientOriginalName();
+       $dados = $request->all();
+        
+        $dados['imagem']->storeAs('public', $dados['imagem']->getClientOriginalName());
+        $dados['imagem'] = '/storage/' . $dados['imagem']->getClientOriginalName();
         Noticia::create($dados);
         
         return redirect()->back()->with('mensagem', 'Registro criado com sucesso!');
@@ -40,11 +37,11 @@ class NoticiaController extends Controller
 
     }
 
-    public function update($noticia, NoticiaRequest $request)
+    public function update($noticia, Request $request)
     {
         $noticia = Noticia::findOrFail($noticia);
         $dados = $request->all();
-        $dados['data_publicacao'] = Carbon::createFromFormat("d/m/Y", $dados['data_publicacao'])->format("Y-m-d");
+        
         if($request->imagem){
             $request->imagem->storeAs('public', $request->imagem->getClientOriginalName());
             $dados['imagem'] = '/storage/' . $request->imagem->getClientOriginalName();
